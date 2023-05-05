@@ -48,8 +48,8 @@ public class BoardGameController {
                     protected Paint computeValue() {
                         return switch (model.squareProperty(i, j).get()) {
                             case NONE -> Color.TRANSPARENT;
-                            case HEAD -> Color.RED;
-                            case TAIL -> Color.BLUE;
+                            case BLUE -> Color.BLUE;
+                            case YELLOW -> Color.YELLOW;
                         };
                     }
                 }

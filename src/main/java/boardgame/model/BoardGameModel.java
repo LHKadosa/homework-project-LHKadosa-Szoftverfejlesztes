@@ -15,6 +15,7 @@ public class BoardGameModel {
                 board[i][j] = new ReadOnlyObjectWrapper<Square>(Square.NONE);
             }
         }
+        setupBoard();
     }
 
     public ReadOnlyObjectProperty<Square> squareProperty(int i, int j) {
@@ -28,9 +29,9 @@ public class BoardGameModel {
     public void move(int i, int j) {
         board[i][j].set(
                 switch (board[i][j].get()) {
-                    case NONE -> Square.HEAD;
-                    case HEAD -> Square.TAIL;
-                    case TAIL -> Square.NONE;
+                    case NONE -> Square.BLUE;
+                    case BLUE -> Square.YELLOW;
+                    case YELLOW -> Square.NONE;
                 }
         );
     }
@@ -44,6 +45,17 @@ public class BoardGameModel {
             sb.append('\n');
         }
         return sb.toString();
+    }
+
+    public void setupBoard(){
+        for(int i=0; i<BOARD_SIZE; i++){
+            board[0][i].set(Square.BLUE);
+            board[BOARD_SIZE-1][i].set(Square.YELLOW);
+        }
+        board[1][0].set(Square.BLUE);
+        board[1][BOARD_SIZE-1].set(Square.BLUE);
+        board[BOARD_SIZE-2][0].set(Square.YELLOW);
+        board[BOARD_SIZE-2][BOARD_SIZE-1].set(Square.YELLOW);
     }
 
     public static void main(String[] args) {
