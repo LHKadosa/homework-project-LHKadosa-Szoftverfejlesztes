@@ -1,0 +1,5 @@
+{
+  "currentPlayer" : "BLUE",
+  "selectedTile" : null,
+  "board" : [ [ "BLUE", "BLUE", "BLUE", "BLUE", "BLUE" ], [ "BLUE", "NONE", "NONE", "NONE", "BLUE" ], [ "NONE", "NONE", "NONE", "NONE", "NONE" ], [ "YELLOW", "NONE", "NONE", "NONE", "YELLOW" ], [ "YELLOW", "YELLOW", "YELLOW", "YELLOW", "YELLOW" ] ]
+}

@@ -108,7 +108,7 @@ public class BoardGameController {
     private void handleMouseClickLoad(MouseEvent event){
         System.out.println("Loading...");
         try {
-            model.load();
+            model.load("Saved");
         } catch (Exception e){
             System.out.println("An error occurred while loading!");
             e.printStackTrace();
@@ -117,8 +117,13 @@ public class BoardGameController {
 
     @FXML
     private void handleMouseClickReset(MouseEvent event){
-        System.out.println("RESET");
-        //model.reset();
+        System.out.println("Resetting...");
+        try {
+            model.load("Default");
+        } catch (Exception e){
+            System.out.println("An error occurred while resetting!");
+            e.printStackTrace();
+        }
     }
 
 }

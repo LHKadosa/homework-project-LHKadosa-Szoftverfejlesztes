@@ -142,8 +142,8 @@ public class BoardGameModel {
         System.out.println("Data was saved successfully");
     }
 
-    public void load() throws Exception{
-        GameData gameData = fileHandler.load();
+    public void load(String fileType) throws Exception{
+        GameData gameData = fileHandler.load(fileType);
 
         currentPlayer = gameData.getCurrentPlayer();
         selectedTile.set(gameData.getSelectedTile());

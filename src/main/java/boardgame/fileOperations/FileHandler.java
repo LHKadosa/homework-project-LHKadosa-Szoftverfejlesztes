@@ -23,14 +23,14 @@ public class FileHandler {
         gameData.setBoard(board);
 
         System.out.println(objectMapper.writeValueAsString(gameData));
-        try (var writer = new FileWriter(path+"gameData_Saved.json")) {
+        try (var writer = new FileWriter(path+ "gameData_Saved.json")) {
             objectMapper.writeValue(writer, gameData);
         }
-        System.out.println(objectMapper.readValue(new FileReader(path+"gameData_Saved.json"),GameData.class));
+        System.out.println(objectMapper.readValue(new FileReader(path+ "gameData_Saved.json"),GameData.class));
     }
 
-    public GameData load() throws Exception{
-        File file = new File(path + "gameData_Saved.json");
+    public GameData load(String fileType) throws Exception{
+        File file = new File(path + "gameData_"+fileType+".json");
         return objectMapper.readValue(file, GameData.class);
     }
 }
