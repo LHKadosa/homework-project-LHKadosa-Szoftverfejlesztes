@@ -7,6 +7,4 @@ public class Main {
     public static void main(String[] args) {
         Application.launch(BoardGameApplication.class, args);
     }
-
-    //TODO:Win popUp and something
 }

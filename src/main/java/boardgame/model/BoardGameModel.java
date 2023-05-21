@@ -4,6 +4,7 @@ import boardgame.fileOperations.FileHandler;
 import boardgame.fileOperations.GameData;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.scene.control.Alert;
 
 
 public class BoardGameModel {
@@ -79,9 +80,11 @@ public class BoardGameModel {
         Square winner = checkForWin();
         if(winner == Square.BLUE){
             System.out.println("BLUE wins!");
+            winnerAlert("Blue");
         }
         else if(winner == Square.YELLOW){
             System.out.println("YELLOW wins!");
+            winnerAlert("Yellow");
         }
         nextPlayer();
     }
@@ -112,6 +115,13 @@ public class BoardGameModel {
         if(winChecker) return Square.BLUE;
 
         return Square.NONE;
+    }
+
+    public void winnerAlert(String winner){
+        var alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Congratulations "+winner+"! You won!");
+        alert.showAndWait();
+        load("Default");
     }
 
     public void save(){
