@@ -10,7 +10,7 @@ public class BoardGameModel {
 
     public static FileHandler fileHandler = new FileHandler();
     public static final int BOARD_SIZE = 5;
-    private Square currentPlayer = Square.BLUE;
+    private Square currentPlayer;
 
     private ReadOnlyObjectWrapper<Square>[][] board = new ReadOnlyObjectWrapper[BOARD_SIZE][BOARD_SIZE];
     private ReadOnlyObjectWrapper<Coordinate> selectedTile = new ReadOnlyObjectWrapper<>();
@@ -21,7 +21,12 @@ public class BoardGameModel {
                 board[i][j] = new ReadOnlyObjectWrapper<Square>(Square.NONE);
             }
         }
-        setupBoard();
+        try{
+            load("Default");
+        }
+        catch (Exception e){
+
+        }
     }
 
     public ReadOnlyObjectProperty<Square> squareProperty(int i, int j) {
@@ -114,24 +119,6 @@ public class BoardGameModel {
         return Square.NONE;
     }
 
-    public void setupBoard(){
-        for(int i=0; i<BOARD_SIZE; i++){
-            board[0][i].set(Square.BLUE);
-            board[BOARD_SIZE-1][i].set(Square.YELLOW);
-        }
-        board[1][0].set(Square.BLUE);
-        board[1][BOARD_SIZE-1].set(Square.BLUE);
-        board[BOARD_SIZE-2][0].set(Square.YELLOW);
-        board[BOARD_SIZE-2][BOARD_SIZE-1].set(Square.YELLOW);
-    }
-
-    /*
-    public void reset(){
-        setupBoard();
-        currentPlayer = Square.BLUE;
-        selectedTile.set(null);
-    }
-*/
     public void save() throws Exception{
         Square[][] tempBoard = new Square[BOARD_SIZE][BOARD_SIZE];
         for(int i=0;i<BOARD_SIZE;i++)
