@@ -8,4 +8,5 @@ public class Main {
         Application.launch(BoardGameApplication.class, args);
     }
 
+    //TODO:Win popUp and something
 }
