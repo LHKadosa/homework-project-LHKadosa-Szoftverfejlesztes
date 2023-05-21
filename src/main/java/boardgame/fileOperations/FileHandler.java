@@ -15,7 +15,8 @@ public class FileHandler {
     private String path = BoardGameModel.class.getClassLoader().getResource("").getPath();
 
 
-    public void save(int BOARD_SIZE, Square currentPlayer, Coordinate selectedTile, Square[][] board) throws Exception{
+    public void save(int BOARD_SIZE, Square currentPlayer, Coordinate selectedTile, Square[][] board){
+        try {
         var gameData = new GameData();
 
         gameData.setCurrentPlayer(currentPlayer);
@@ -27,10 +28,22 @@ public class FileHandler {
             objectMapper.writeValue(writer, gameData);
         }
         System.out.println(objectMapper.readValue(new FileReader(path+ "gameData_Saved.json"),GameData.class));
+        }
+        catch (Exception e){
+            System.out.println("An error occurred while saving!");
+            e.printStackTrace();
+        }
     }
 
-    public GameData load(String fileType) throws Exception{
-        File file = new File(path + "gameData_"+fileType+".json");
-        return objectMapper.readValue(file, GameData.class);
+    public GameData load(String fileType){
+        try {
+            File file = new File(path + "gameData_"+fileType+".json");
+            return objectMapper.readValue(file, GameData.class);
+        }
+        catch (Exception e){
+            System.out.println("An error occurred while loading!");
+            e.printStackTrace();
+            return new GameData();
+        }
     }
 }

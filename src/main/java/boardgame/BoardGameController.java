@@ -95,35 +95,19 @@ public class BoardGameController {
 
     @FXML
     private void handleMouseClickSave(MouseEvent event){
-        System.out.println("Saving...");
-        try {
-            model.save();
-        } catch (Exception e){
-            System.out.println("An error occurred while saving!");
-            e.printStackTrace();
-        }
+        model.save();
     }
 
     @FXML
     private void handleMouseClickLoad(MouseEvent event){
         System.out.println("Loading...");
-        try {
-            model.load("Saved");
-        } catch (Exception e){
-            System.out.println("An error occurred while loading!");
-            e.printStackTrace();
-        }
+        model.load("Saved");
     }
 
     @FXML
     private void handleMouseClickReset(MouseEvent event){
         System.out.println("Resetting...");
-        try {
-            model.load("Default");
-        } catch (Exception e){
-            System.out.println("An error occurred while resetting!");
-            e.printStackTrace();
-        }
+        model.load("Default");
     }
 
 }

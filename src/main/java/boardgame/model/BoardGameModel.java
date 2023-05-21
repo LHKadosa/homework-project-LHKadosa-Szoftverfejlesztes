@@ -21,12 +21,7 @@ public class BoardGameModel {
                 board[i][j] = new ReadOnlyObjectWrapper<Square>(Square.NONE);
             }
         }
-        try{
-            load("Default");
-        }
-        catch (Exception e){
-
-        }
+        load("Default");
     }
 
     public ReadOnlyObjectProperty<Square> squareProperty(int i, int j) {
@@ -119,7 +114,7 @@ public class BoardGameModel {
         return Square.NONE;
     }
 
-    public void save() throws Exception{
+    public void save(){
         Square[][] tempBoard = new Square[BOARD_SIZE][BOARD_SIZE];
         for(int i=0;i<BOARD_SIZE;i++)
             for(int j=0;j<BOARD_SIZE;j++)
@@ -129,7 +124,7 @@ public class BoardGameModel {
         System.out.println("Data was saved successfully");
     }
 
-    public void load(String fileType) throws Exception{
+    public void load(String fileType){
         GameData gameData = fileHandler.load(fileType);
 
         currentPlayer = gameData.getCurrentPlayer();
