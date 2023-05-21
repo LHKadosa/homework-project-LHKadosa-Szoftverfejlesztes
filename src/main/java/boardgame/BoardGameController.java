@@ -45,14 +45,8 @@ public class BoardGameController {
         square.getStyleClass().add("square");
         var piece = new Circle(50);
         piece.setStrokeWidth(5);
-/*
-        piece.fillProperty().bind(Bindings.when(model.squareProperty(i, j).isEqualTo(Square.NONE))
-                .then(Color.TRANSPARENT)
-                .otherwise(Bindings.when(model.squareProperty(i, j).isEqualTo(Square.HEAD))
-                        .then(Color.RED)
-                        .otherwise(Color.BLUE))
-        );
-*/
+
+
         piece.fillProperty().bind(
                 new ObjectBinding<Paint>() {
                     {
@@ -101,7 +95,14 @@ public class BoardGameController {
 
     @FXML
     private void handleMouseClickSave(MouseEvent event){
-        System.out.println("SAVE");
+        System.out.println("Saving...");
+        try {
+            model.save();
+        } catch (Exception e){
+            System.out.println("An error occurred while saving!");
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -112,6 +113,7 @@ public class BoardGameController {
     @FXML
     private void handleMouseClickReset(MouseEvent event){
         System.out.println("RESET");
+        //model.reset();
     }
 
 }
