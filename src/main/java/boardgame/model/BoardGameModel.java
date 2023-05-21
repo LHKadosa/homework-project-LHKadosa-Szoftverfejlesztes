@@ -48,7 +48,7 @@ public class BoardGameModel {
         if(board[i][j].get() == Square.NONE){
             System.out.println("The square has been moved");
             move(i,j,selectedTile.get().getRow(), selectedTile.get().getCol());
-            nextPlayer();
+            nextTurn();
         }
         else{
             System.out.println("The square has been selected");
@@ -71,6 +71,17 @@ public class BoardGameModel {
         return Math.abs(fromRow - toRow) <= 1 && Math.abs(fromCol - toCol) <= 1;
     }
 
+    public void nextTurn(){
+        Square winner = checkForWin();
+        if(winner == Square.BLUE){
+            System.out.println("BLUE wins!");
+        }
+        else if(winner == Square.YELLOW){
+            System.out.println("YELLOW wins!");
+        }
+        nextPlayer();
+    }
+
     public void nextPlayer(){
         selectedTile.set(null);
         currentPlayer = switch(currentPlayer){
@@ -79,15 +90,24 @@ public class BoardGameModel {
         };
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (var i = 0; i < BOARD_SIZE; i++) {
-            for (var j = 0; j < BOARD_SIZE; j++) {
-                sb.append(board[i][j].get().ordinal()).append(' ');
-            }
-            sb.append('\n');
-        }
-        return sb.toString();
+    public Square checkForWin(){
+        Boolean winChecker = true;
+        for(int i=0; i<BOARD_SIZE; i++)
+            if (board[0][i].get() != Square.YELLOW) winChecker = false;
+        if(board[1][0].get() != Square.YELLOW) winChecker = false;
+        if(board[1][BOARD_SIZE-1].get() != Square.YELLOW) winChecker = false;
+
+        if(winChecker) return Square.YELLOW;
+
+        winChecker = true;
+        for(int i=0; i<BOARD_SIZE; i++)
+            if (board[BOARD_SIZE-1][i].get() != Square.BLUE) winChecker = false;
+        if(board[BOARD_SIZE-2][0].get() != Square.BLUE) winChecker = false;
+        if(board[BOARD_SIZE-2][BOARD_SIZE-1].get() != Square.BLUE) winChecker = false;
+
+        if(winChecker) return Square.BLUE;
+
+        return Square.NONE;
     }
 
     public void setupBoard(){
@@ -99,6 +119,17 @@ public class BoardGameModel {
         board[1][BOARD_SIZE-1].set(Square.BLUE);
         board[BOARD_SIZE-2][0].set(Square.YELLOW);
         board[BOARD_SIZE-2][BOARD_SIZE-1].set(Square.YELLOW);
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (var i = 0; i < BOARD_SIZE; i++) {
+            for (var j = 0; j < BOARD_SIZE; j++) {
+                sb.append(board[i][j].get().ordinal()).append(' ');
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
     }
 
     public static void main(String[] args) {
