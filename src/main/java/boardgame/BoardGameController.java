@@ -3,6 +3,7 @@ package boardgame;
 import boardgame.model.BoardGameModel;
 import javafx.beans.binding.ObjectBinding;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -15,6 +16,14 @@ public class BoardGameController {
     @FXML
     private GridPane board;
 
+    @FXML
+    private Button save;
+
+    @FXML
+    private Button load;
+    @FXML
+    private Button reset;
+
     private BoardGameModel model = new BoardGameModel();
 
     @FXML
@@ -25,6 +34,10 @@ public class BoardGameController {
                 board.add(square, j, i);
             }
         }
+
+        save.setOnMouseClicked(this::handleMouseClickSave);
+        load.setOnMouseClicked(this::handleMouseClickLoad);
+        reset.setOnMouseClicked(this::handleMouseClickReset);
     }
 
     private StackPane createSquare(int i, int j) {
@@ -73,17 +86,32 @@ public class BoardGameController {
         );
 
         square.getChildren().add(piece);
-        square.setOnMouseClicked(this::handleMouseClick);
+        square.setOnMouseClicked(this::handleMouseClickSquare);
         return square;
     }
 
     @FXML
-    private void handleMouseClick(MouseEvent event) {
+    private void handleMouseClickSquare(MouseEvent event) {
         var square = (StackPane) event.getSource();
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
         System.out.printf("Click on square (%d,%d)%n", row, col);
         model.inputManager(row, col);
+    }
+
+    @FXML
+    private void handleMouseClickSave(MouseEvent event){
+        System.out.println("SAVE");
+    }
+
+    @FXML
+    private void handleMouseClickLoad(MouseEvent event){
+        System.out.println("LOAD");
+    }
+
+    @FXML
+    private void handleMouseClickReset(MouseEvent event){
+        System.out.println("RESET");
     }
 
 }
