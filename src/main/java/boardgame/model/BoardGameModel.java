@@ -39,8 +39,8 @@ public class BoardGameModel {
                 System.out.println("Invalid input! You need to select a square first");
                 return false;
             }
-            else if(!isNeighbour(i,j,selectedTile.get().getRow(), selectedTile.get().getCol())){
-                System.out.println("Invalid input! The destination must be a neighbour square");
+            else if(!isValidMove(i,j,selectedTile.get().getRow(), selectedTile.get().getCol())){
+                System.out.println("Invalid input! The destination must be a diagonal square");
                 return false;
             }
         }
@@ -67,8 +67,8 @@ public class BoardGameModel {
         return false;
     }
 
-    public boolean isNeighbour(int toRow, int toCol, int fromRow, int fromCol){
-        return Math.abs(fromRow - toRow) <= 1 && Math.abs(fromCol - toCol) <= 1;
+    public boolean isValidMove(int toRow, int toCol, int fromRow, int fromCol){
+        return Math.abs(fromRow - toRow) == 1 && Math.abs(fromCol - toCol) == 1;
     }
 
     public void nextTurn(){
