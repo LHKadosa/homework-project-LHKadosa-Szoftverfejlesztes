@@ -31,6 +31,7 @@ public class BoardGameController {
         var square = new StackPane();
         square.getStyleClass().add("square");
         var piece = new Circle(50);
+        piece.setStrokeWidth(5);
 /*
         piece.fillProperty().bind(Bindings.when(model.squareProperty(i, j).isEqualTo(Square.NONE))
                 .then(Color.TRANSPARENT)
@@ -54,6 +55,23 @@ public class BoardGameController {
                     }
                 }
         );
+
+        piece.strokeProperty().bind(
+                new ObjectBinding<Paint>() {
+                    {
+                        super.bind(model.selectedProperty());
+                    }
+                    @Override
+                    protected Paint computeValue() {
+                        if(model.selectedProperty().get() == null) return Color.TRANSPARENT;
+                        if(model.selectedProperty().get().getRow() == i && model.selectedProperty().get().getCol() == j)
+                            return Color.BLACK;
+                        else
+                            return Color.TRANSPARENT;
+                    }
+                }
+        );
+
         square.getChildren().add(piece);
         square.setOnMouseClicked(this::handleMouseClick);
         return square;
@@ -65,7 +83,7 @@ public class BoardGameController {
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
         System.out.printf("Click on square (%d,%d)%n", row, col);
-        model.move(row, col);
+        model.inputManager(row, col);
     }
 
 }
