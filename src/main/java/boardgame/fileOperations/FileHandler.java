@@ -6,14 +6,16 @@ import boardgame.model.Square;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
 public class FileHandler {
+    private ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    private String path = BoardGameModel.class.getClassLoader().getResource("").getPath();
+
 
     public void save(int BOARD_SIZE, Square currentPlayer, Coordinate selectedTile, Square[][] board) throws Exception{
-        var objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        String path = BoardGameModel.class.getClassLoader().getResource("").getPath();
         var gameData = new GameData();
 
         gameData.setCurrentPlayer(currentPlayer);
@@ -25,6 +27,10 @@ public class FileHandler {
             objectMapper.writeValue(writer, gameData);
         }
         System.out.println(objectMapper.readValue(new FileReader(path+"gameData_Saved.json"),GameData.class));
-        System.out.println("Data was saved successfully");
+    }
+
+    public GameData load() throws Exception{
+        File file = new File(path + "gameData_Saved.json");
+        return objectMapper.readValue(file, GameData.class);
     }
 }

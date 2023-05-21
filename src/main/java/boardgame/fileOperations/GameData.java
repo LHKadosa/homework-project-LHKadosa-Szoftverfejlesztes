@@ -8,4 +8,8 @@ public class GameData {
         private Square currentPlayer;
         private Coordinate selectedTile;
         private Square[][] board;
+
+        public Square getBoardElement(int i, int j){
+                return board[i][j];
+        }
 }

@@ -102,12 +102,17 @@ public class BoardGameController {
             System.out.println("An error occurred while saving!");
             e.printStackTrace();
         }
-
     }
 
     @FXML
     private void handleMouseClickLoad(MouseEvent event){
-        System.out.println("LOAD");
+        System.out.println("Loading...");
+        try {
+            model.load();
+        } catch (Exception e){
+            System.out.println("An error occurred while loading!");
+            e.printStackTrace();
+        }
     }
 
     @FXML

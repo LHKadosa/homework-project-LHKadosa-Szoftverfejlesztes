@@ -2,12 +2,8 @@ package boardgame.model;
 
 import boardgame.fileOperations.FileHandler;
 import boardgame.fileOperations.GameData;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.FileReader;
-import java.io.FileWriter;
 
 
 public class BoardGameModel {
@@ -143,6 +139,20 @@ public class BoardGameModel {
                 tempBoard[i][j] = board[i][j].get();
 
         fileHandler.save(BOARD_SIZE, currentPlayer, selectedTile.get(), tempBoard);
+        System.out.println("Data was saved successfully");
+    }
+
+    public void load() throws Exception{
+        GameData gameData = fileHandler.load();
+
+        currentPlayer = gameData.getCurrentPlayer();
+        selectedTile.set(gameData.getSelectedTile());
+        for(int i=0;i<BOARD_SIZE;i++)
+            for(int j=0;j<BOARD_SIZE;j++)
+                board[i][j].set(gameData.getBoardElement(i,j));
+
+        System.out.println(gameData);
+        System.out.println("Data was loaded successfully");
     }
 
     public String toString() {
