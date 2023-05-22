@@ -6,16 +6,19 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.scene.control.Alert;
 
-
+/**
+ * Defines the rules of the game and manages them
+ */
 public class BoardGameModel {
 
-    public static FileHandler fileHandler = new FileHandler();
+    private static FileHandler fileHandler = new FileHandler();
     public static final int BOARD_SIZE = 5;
-    private Square currentPlayer;
+    public Square currentPlayer;
 
     private ReadOnlyObjectWrapper<Square>[][] board = new ReadOnlyObjectWrapper[BOARD_SIZE][BOARD_SIZE];
     private ReadOnlyObjectWrapper<Coordinate> selectedTile = new ReadOnlyObjectWrapper<>();
 
+    /** Initializes the board structure and loads the starting game state. */
     public BoardGameModel() {
         for (var i = 0; i < BOARD_SIZE; i++) {
             for (var j = 0; j < BOARD_SIZE; j++) {
@@ -25,14 +28,28 @@ public class BoardGameModel {
         load("Default");
     }
 
+    /** Used by the Controller to be able to subscribe to the changes of the board state. */
     public ReadOnlyObjectProperty<Square> squareProperty(int i, int j) {
         return board[i][j].getReadOnlyProperty();
     }
+    /** Used by the Controller to be able to subscribe to the changes of the selected discs. */
     public ReadOnlyObjectProperty<Coordinate> selectedProperty() {
         return selectedTile.getReadOnlyProperty();
     }
 
-
+    /**
+     * Interprets disk selection and executes the appropriate instructions according to the game rules.
+     * It will ignore the input and returns with {@code false} if:
+     *  -the selected disc belongs to the other player.
+     *  -the player selects a destination before selecting the disc to be moved.
+     *  -the destination is NOT a diagonal neighbor of the disc the player wants to move.
+     * It will execute the appropriate instructions and returns with {@code true} if:
+     *  -the player selects a disc of its own.
+     *  -the destination is a diagonal neighbor of the disc the player wants to move.
+     * @param i The y coordinate of the selected disc.
+     * @param j The x coordinate of the selected disc.
+     * @return The success of the process. If a square is saved in the selectedTile or a disc was moved it return {@code true}, otherwise {@code false}.
+     */
     public boolean inputManager(int i, int j){
         if(isOpponentSquare(i,j)){
             System.out.println("Invalid input! You cannot select the other player's square");
@@ -62,20 +79,35 @@ public class BoardGameModel {
         return true;
     }
 
+    /**
+     * Moves a selected disc to a new position.
+     * It assumes that the feasibility of the move has been checked in advance.
+     * @param toRow Destination row.
+     * @param toCol Destination column.
+     * @param fromRow Row of disk to be moved.
+     * @param fromCol Column of disk to be moved.
+     */
     public void move(int toRow, int toCol, int fromRow, int fromCol){
         board[toRow][toCol].set(currentPlayer);
         board[fromRow][fromCol].set(Square.NONE);
     }
 
+    /** @return Returns {@true} if the player selects the opponent's disc. */
     public boolean isOpponentSquare(int i, int j){
         if(board[i][j].get() != Square.NONE && board[i][j].get() != currentPlayer) return true;
         return false;
     }
 
+    /** @return Returns {@true} if the destination is a diagonal neighbor of the disc the player wants to move. */
     public boolean isValidMove(int toRow, int toCol, int fromRow, int fromCol){
         return Math.abs(fromRow - toRow) == 1 && Math.abs(fromCol - toCol) == 1;
     }
 
+    /**
+     * Handles round switching.
+     * It calls the {@code checkForWin()} methode and declares the winner using {@code winnerAlert(winner)} if there is one.
+     * If there is no winner, it passes the round to the other player using the {@code nextPlayer()} methode.
+     */
     public void nextTurn(){
         Square winner = checkForWin();
         if(winner == Square.BLUE){
@@ -86,9 +118,10 @@ public class BoardGameModel {
             System.out.println("YELLOW wins!");
             winnerAlert("Yellow");
         }
-        nextPlayer();
+        else nextPlayer();
     }
 
+    /** Resets the {@code selectedTile} variable and switches to the other player. */
     public void nextPlayer(){
         selectedTile.set(null);
         currentPlayer = switch(currentPlayer){
@@ -97,6 +130,7 @@ public class BoardGameModel {
         };
     }
 
+    /** @return Returns with the winning color. If there is no winner, then it returns with {@code NONE}*/
     public Square checkForWin(){
         Boolean winChecker = true;
         for(int i=0; i<BOARD_SIZE; i++)
@@ -117,6 +151,11 @@ public class BoardGameModel {
         return Square.NONE;
     }
 
+    /**
+     * Creates a pop-up window where it congratulates the winner.
+     * After the player closes the pop-up, it resets the board.
+     * @param winner The name of the winner.
+     */
     public void winnerAlert(String winner){
         var alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Congratulations "+winner+"! You won!");
@@ -124,16 +163,21 @@ public class BoardGameModel {
         load("Default");
     }
 
+    /** Passes the game state to the {@code FileHandler} for saving. */
     public void save(){
         Square[][] tempBoard = new Square[BOARD_SIZE][BOARD_SIZE];
         for(int i=0;i<BOARD_SIZE;i++)
             for(int j=0;j<BOARD_SIZE;j++)
                 tempBoard[i][j] = board[i][j].get();
 
-        fileHandler.save(BOARD_SIZE, currentPlayer, selectedTile.get(), tempBoard);
+        fileHandler.save(currentPlayer, selectedTile.get(), tempBoard);
         System.out.println("Data was saved successfully");
     }
 
+    /**
+     * Receives the game state from the {@code FileHandler} by loading.
+     * @param fileType Tells the loader to load the default or the saved game state. It can only contain the text {@code Default} or {@code Saved}
+     */
     public void load(String fileType){
         GameData gameData = fileHandler.load(fileType);
 
@@ -147,6 +191,7 @@ public class BoardGameModel {
         System.out.println("Data was loaded successfully");
     }
 
+    /** @return Returns an int matrix from the board. */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (var i = 0; i < BOARD_SIZE; i++) {

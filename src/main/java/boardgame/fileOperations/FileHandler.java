@@ -10,12 +10,23 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+/**
+ * Handles the IO operations for saving and loading.
+ * The match data is stored in json files using Jackson.
+ */
 public class FileHandler {
     private ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private String path = BoardGameModel.class.getClassLoader().getResource("").getPath();
 
 
-    public void save(int BOARD_SIZE, Square currentPlayer, Coordinate selectedTile, Square[][] board){
+    /**
+     * It saves the three data that define a game state.
+     * The data is stored in {@code gameData_Saved.json}.
+     * @param currentPlayer Which player can move their discs.
+     * @param selectedTile Which tile is being selected for moving. If the value is {@code null}, the player has not yet selected a disc.
+     * @param board Stores the locations of disks on the board.
+     */
+    public void save(Square currentPlayer, Coordinate selectedTile, Square[][] board){
         try {
         var gameData = new GameData();
 
@@ -35,6 +46,11 @@ public class FileHandler {
         }
     }
 
+    /**
+     * It loads the three data that define a game state.
+     * @param fileType Tells the loader to load the default or the saved game state. It can only contain the text {@code Default} or {@code Saved}
+     * @return An instance of the GameData, filled with the loaded information.
+     */
     public GameData load(String fileType){
         try {
             File file = new File(path + "gameData_"+fileType+".json");
