@@ -92,13 +92,13 @@ public class BoardGameModel {
         board[fromRow][fromCol].set(Square.NONE);
     }
 
-    /** @return Returns {@true} if the player selects the opponent's disc. */
+    /** Returns {@code true} if the player selects the opponent's disc. */
     public boolean isOpponentSquare(int i, int j){
         if(board[i][j].get() != Square.NONE && board[i][j].get() != currentPlayer) return true;
         return false;
     }
 
-    /** @return Returns {@true} if the destination is a diagonal neighbor of the disc the player wants to move. */
+    /** Returns {@code true} if the destination is a diagonal neighbor of the disc the player wants to move. */
     public boolean isValidMove(int toRow, int toCol, int fromRow, int fromCol){
         return Math.abs(fromRow - toRow) == 1 && Math.abs(fromCol - toCol) == 1;
     }
@@ -130,7 +130,7 @@ public class BoardGameModel {
         };
     }
 
-    /** @return Returns with the winning color. If there is no winner, then it returns with {@code NONE}*/
+    /** Returns with the winning color. If there is no winner, then it returns with {@code NONE}*/
     public Square checkForWin(){
         Boolean winChecker = true;
         for(int i=0; i<BOARD_SIZE; i++)
@@ -191,7 +191,7 @@ public class BoardGameModel {
         System.out.println("Data was loaded successfully");
     }
 
-    /** @return Returns an int matrix from the board. */
+    /** Returns an int matrix from the board. */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (var i = 0; i < BOARD_SIZE; i++) {
