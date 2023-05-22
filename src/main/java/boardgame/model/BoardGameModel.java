@@ -14,12 +14,12 @@ import java.util.SimpleTimeZone;
  */
 public class BoardGameModel {
 
-    private static FileHandler fileHandler = new FileHandler();
+    public static FileHandler fileHandler = new FileHandler();
     public static final int BOARD_SIZE = 5;
     public Square currentPlayer;
 
-    private ReadOnlyObjectWrapper<Square>[][] board = new ReadOnlyObjectWrapper[BOARD_SIZE][BOARD_SIZE];
-    private ReadOnlyObjectWrapper<Coordinate> selectedTile = new ReadOnlyObjectWrapper<>();
+    public ReadOnlyObjectWrapper<Square>[][] board = new ReadOnlyObjectWrapper[BOARD_SIZE][BOARD_SIZE];
+    public ReadOnlyObjectWrapper<Coordinate> selectedTile = new ReadOnlyObjectWrapper<>();
 
     /** Initializes the board structure and loads the starting game state. */
     public BoardGameModel() {
@@ -91,7 +91,7 @@ public class BoardGameModel {
      * @param fromCol Column of disk to be moved.
      */
     public void move(int toRow, int toCol, int fromRow, int fromCol){
-        board[toRow][toCol].set(currentPlayer);
+        board[toRow][toCol].set(board[fromRow][fromCol].get());
         board[fromRow][fromCol].set(Square.NONE);
     }
 
@@ -102,7 +102,7 @@ public class BoardGameModel {
     }
 
     /** Returns {@code true} if the destination is a diagonal neighbor of the disc the player wants to move. */
-    public boolean isValidMove(int toRow, int toCol, int fromRow, int fromCol){
+    public static boolean isValidMove(int toRow, int toCol, int fromRow, int fromCol){
         return Math.abs(fromRow - toRow) == 1 && Math.abs(fromCol - toCol) == 1;
     }
 
