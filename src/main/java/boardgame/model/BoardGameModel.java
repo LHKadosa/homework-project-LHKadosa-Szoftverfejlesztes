@@ -5,6 +5,9 @@ import boardgame.fileOperations.GameData;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.scene.control.Alert;
+import org.tinylog.Logger;
+
+import java.util.SimpleTimeZone;
 
 /**
  * Defines the rules of the game and manages them
@@ -52,28 +55,28 @@ public class BoardGameModel {
      */
     public boolean inputManager(int i, int j){
         if(isOpponentSquare(i,j)){
-            System.out.println("Invalid input! You cannot select the other player's square");
+            Logger.warn("Invalid input! You cannot select the other player's square");
             return false;
         }
 
         if(board[i][j].get() == Square.NONE){
             if(selectedTile.get() == null){
-                System.out.println("Invalid input! You need to select a square first");
+                Logger.warn("Invalid input! You need to select a square first");
                 return false;
             }
             else if(!isValidMove(i,j,selectedTile.get().getRow(), selectedTile.get().getCol())){
-                System.out.println("Invalid input! The destination must be a diagonal square");
+                Logger.warn("Invalid input! The destination must be a diagonal square");
                 return false;
             }
         }
 
         if(board[i][j].get() == Square.NONE){
-            System.out.println("The square has been moved");
+            Logger.debug("The square has been moved");
             move(i,j,selectedTile.get().getRow(), selectedTile.get().getCol());
             nextTurn();
         }
         else{
-            System.out.println("The square has been selected");
+            Logger.debug("The square has been selected");
             selectedTile.set(new Coordinate(i,j));
         }
         return true;
@@ -111,11 +114,9 @@ public class BoardGameModel {
     public void nextTurn(){
         Square winner = checkForWin();
         if(winner == Square.BLUE){
-            System.out.println("BLUE wins!");
             winnerAlert("Blue");
         }
         else if(winner == Square.YELLOW){
-            System.out.println("YELLOW wins!");
             winnerAlert("Yellow");
         }
         else nextPlayer();
@@ -157,6 +158,7 @@ public class BoardGameModel {
      * @param winner The name of the winner.
      */
     public void winnerAlert(String winner){
+        Logger.info("{} wins!",winner);
         var alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Congratulations "+winner+"! You won!");
         alert.showAndWait();
@@ -171,7 +173,7 @@ public class BoardGameModel {
                 tempBoard[i][j] = board[i][j].get();
 
         fileHandler.save(currentPlayer, selectedTile.get(), tempBoard);
-        System.out.println("Data was saved successfully");
+        Logger.debug("Data was saved successfully");
     }
 
     /**
@@ -186,9 +188,8 @@ public class BoardGameModel {
         for(int i=0;i<BOARD_SIZE;i++)
             for(int j=0;j<BOARD_SIZE;j++)
                 board[i][j].set(gameData.getBoardElement(i,j));
-
-        System.out.println(gameData);
-        System.out.println("Data was loaded successfully");
+        Logger.trace(gameData);
+        Logger.debug("Data was loaded successfully");
     }
 
     /** Returns an int matrix from the board. */
@@ -205,7 +206,7 @@ public class BoardGameModel {
 
     public static void main(String[] args) {
         var model = new BoardGameModel();
-        System.out.println(model);
+        Logger.trace(model);
     }
 
 }

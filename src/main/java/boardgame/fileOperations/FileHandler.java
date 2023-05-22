@@ -5,6 +5,7 @@ import boardgame.model.Coordinate;
 import boardgame.model.Square;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.tinylog.Logger;
 
 import java.io.File;
 import java.io.FileReader;
@@ -34,14 +35,14 @@ public class FileHandler {
         gameData.setSelectedTile(selectedTile);
         gameData.setBoard(board);
 
-        System.out.println(objectMapper.writeValueAsString(gameData));
+        Logger.debug(objectMapper.writeValueAsString(gameData));
         try (var writer = new FileWriter(path+ "gameData_Saved.json")) {
             objectMapper.writeValue(writer, gameData);
         }
-        System.out.println(objectMapper.readValue(new FileReader(path+ "gameData_Saved.json"),GameData.class));
+        Logger.info(objectMapper.readValue(new FileReader(path+ "gameData_Saved.json"),GameData.class));
         }
         catch (Exception e){
-            System.out.println("An error occurred while saving!");
+            Logger.error("An error occurred while saving!");
             e.printStackTrace();
         }
     }
@@ -57,7 +58,7 @@ public class FileHandler {
             return objectMapper.readValue(file, GameData.class);
         }
         catch (Exception e){
-            System.out.println("An error occurred while loading!");
+            Logger.error("An error occurred while loading!");
             e.printStackTrace();
             return new GameData();
         }

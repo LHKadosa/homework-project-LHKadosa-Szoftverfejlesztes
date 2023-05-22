@@ -10,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import org.tinylog.Logger;
 
 public class BoardGameController {
 
@@ -95,18 +96,19 @@ public class BoardGameController {
 
     @FXML
     private void handleMouseClickSave(MouseEvent event){
+        Logger.debug("Saving...");
         model.save();
     }
 
     @FXML
     private void handleMouseClickLoad(MouseEvent event){
-        System.out.println("Loading...");
+        Logger.debug("Loading...");
         model.load("Saved");
     }
 
     @FXML
     private void handleMouseClickReset(MouseEvent event){
-        System.out.println("Resetting...");
+        Logger.debug("Resetting...");
         model.load("Default");
     }
 
