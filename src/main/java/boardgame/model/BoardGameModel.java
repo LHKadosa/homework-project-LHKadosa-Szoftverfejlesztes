@@ -42,13 +42,19 @@ public class BoardGameModel {
 
     /**
      * Interprets disk selection and executes the appropriate instructions according to the game rules.
-     * It will ignore the input and returns with {@code false} if:
-     *  -the selected disc belongs to the other player.
-     *  -the player selects a destination before selecting the disc to be moved.
-     *  -the destination is NOT a diagonal neighbor of the disc the player wants to move.
-     * It will execute the appropriate instructions and returns with {@code true} if:
-     *  -the player selects a disc of its own.
-     *  -the destination is a diagonal neighbor of the disc the player wants to move.
+     * <ul>
+     *      <li>It will ignore the input and returns with {@code false} if:
+     *          <ul>
+     *              <li>the selected disc belongs to the other player.
+     *              <li>the player selects a destination before selecting the disc to be moved.
+     *              <li>the destination is NOT a diagonal neighbor of the disc the player wants to move.
+     *          </ul>
+     *      <li>It will execute the appropriate instructions and returns with {@code true} if:
+     *          <ul>
+     *              <li>the player selects a disc of its own.
+     *              <li>the destination is a diagonal neighbor of the disc the player wants to move.
+     *          </ul>
+     * </ul>
      * @param i The y coordinate of the selected disc.
      * @param j The x coordinate of the selected disc.
      * @return The success of the process. If a square is saved in the selectedTile or a disc was moved it return {@code true}, otherwise {@code false}.
