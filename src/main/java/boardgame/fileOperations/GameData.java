@@ -13,7 +13,7 @@ public class GameData {
         private Square[][] board;
 
         /**
-         * Refer to elements individually
+         * Refer to elements individually.
          * @param i The y-axis on the board.
          * @param j The x-axis on the board.
          * @return A single Square element

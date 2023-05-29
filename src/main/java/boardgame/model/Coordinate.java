@@ -23,9 +23,7 @@ public class Coordinate {
         this.col = col;
     }
 
-    /**
-     * It returns the class data in the following form: Coordinate{ row=[row], col=[col]}
-     */
+    /** It returns the class data in the following form: Coordinate{ row=[row], col=[col]}. */
     @Override
     public String toString() {
         return "Coordinate{ row=" + row + ", col=" + col + "}";

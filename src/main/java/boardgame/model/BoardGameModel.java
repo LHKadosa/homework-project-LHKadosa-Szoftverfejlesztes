@@ -10,7 +10,7 @@ import org.tinylog.Logger;
 import java.util.SimpleTimeZone;
 
 /**
- * Defines the rules of the game and manages them
+ * Defines the rules of the game and manages them.
  */
 public class BoardGameModel {
 
@@ -31,11 +31,11 @@ public class BoardGameModel {
         load("Default");
     }
 
-    /** Used by the Controller to be able to subscribe to the changes of the board state. */
+    /** {@return Square used by the Controller to be able to subscribe to the changes of the board state.} */
     public ReadOnlyObjectProperty<Square> squareProperty(int i, int j) {
         return board[i][j].getReadOnlyProperty();
     }
-    /** Used by the Controller to be able to subscribe to the changes of the selected discs. */
+    /** {@return Coordinate used by the Controller to be able to subscribe to the changes of the selected discs.} */
     public ReadOnlyObjectProperty<Coordinate> selectedProperty() {
         return selectedTile.getReadOnlyProperty();
     }
@@ -101,13 +101,13 @@ public class BoardGameModel {
         board[fromRow][fromCol].set(Square.NONE);
     }
 
-    /** Returns {@code true} if the player selects the opponent's disc. */
+    /** {@return {@code true} if the player selects the opponent's disc.} */
     public boolean isOpponentSquare(int i, int j){
         if(board[i][j].get() != Square.NONE && board[i][j].get() != currentPlayer) return true;
         return false;
     }
 
-    /** Returns {@code true} if the destination is a diagonal neighbor of the disc the player wants to move. */
+    /** {@return {@code true} if the destination is a diagonal neighbor of the disc the player wants to move.} */
     public static boolean isValidMove(int toRow, int toCol, int fromRow, int fromCol){
         return Math.abs(fromRow - toRow) == 1 && Math.abs(fromCol - toCol) == 1;
     }
@@ -137,7 +137,7 @@ public class BoardGameModel {
         };
     }
 
-    /** Returns with the winning color. If there is no winner, then it returns with {@code NONE}*/
+    /** {@return with the winning color. If there is no winner, then it returns with {@code NONE} }*/
     public Square checkForWin(){
         Boolean winChecker = true;
         for(int i=0; i<BOARD_SIZE; i++)
@@ -198,7 +198,7 @@ public class BoardGameModel {
         Logger.debug("Data was loaded successfully");
     }
 
-    /** Returns an int matrix from the board. */
+    /** {@return an int matrix from the board.} */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (var i = 0; i < BOARD_SIZE; i++) {
